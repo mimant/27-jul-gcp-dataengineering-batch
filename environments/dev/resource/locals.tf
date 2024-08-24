@@ -11,4 +11,11 @@ tables = {
     file => ( jsondecode(file("${path.module}/${file}")))
 
  }
+
+buckets = {
+   for file in fileset(path.module, "buckets/*json") :
+    file => ( jsondecode(file("${path.module}/${file}")))
+
+ }
+
 }
