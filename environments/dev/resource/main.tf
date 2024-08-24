@@ -52,7 +52,7 @@ resource "google_storage_bucket" "buckets" {
   for_each = local.buckets
 
   project = var.project_id
-  name = "${var.project_id}"-each.value["name"]
+  name = format("${var.project_id}",each.value["name"])
   location = each.value["location"]
   storage_class = each.value["storage_class"]
 }
