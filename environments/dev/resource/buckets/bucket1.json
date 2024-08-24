@@ -1,0 +1,5 @@
+{
+    "name": "bucket1",
+    "location" : "EU",
+    "storage_class" : "STANDARD"
+}
