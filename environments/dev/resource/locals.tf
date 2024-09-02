@@ -45,7 +45,7 @@ workflows_list = {
    "\n",
    concat(
     [templatefile(file_path, {project_id = var.project_id} )],
-    [for sub_file in local.subworkflows_list: templatefile(sub_file, {location_id = var.location_id, bq_location = "EU", stored_proc_name = "`mimant115-gcp-batch-dv.dataset1.new_proc`"})]
+    [for sub_file in local.subworkflows_list: templatefile(sub_file, {location_id = var.location_id, bq_location = "EU", stored_proc_name = "`mimant115-gcp-batch-dv.dataset1.new_proc`",project_id = var.project_id})]
    )
   )
 }
