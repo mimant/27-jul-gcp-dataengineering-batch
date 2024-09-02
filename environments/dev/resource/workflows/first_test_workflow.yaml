@@ -5,5 +5,5 @@ main:
     - run_bigquery_job:
         call: callBQStoredProc
         args:
-          stored_proc_name: '`mimant115-gcp-batch-dv.dataset1.new_proc`'
-          project_id: mimant115-gcp-batch-dv
+          stored_proc_name: '`"${var.project_id}".dataset1.new_proc`'
+          project_id: "${var.project_id}"
