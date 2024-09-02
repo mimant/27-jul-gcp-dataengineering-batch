@@ -18,17 +18,12 @@ callBQStoredProc:
     - log_start:
         call: sys.log
         args:
-          text: >
-            ${"Starting execution of bigquery stored procedure \"" +
-            stored_proc_name + "\" using subworkflow executeBQStoredProc in
-            location=" + bq_location}
+          text: ${"Starting execution of bigquery stored procedure \"" +  stored_proc_name + "\" using subworkflow executeBQStoredProc in location=" + bq_location}
           severity: INFO
     - postCallStoredProc:
         call: http.post
         args:
-          url: >-
-            ${"https://bigquery.googleapis.com/bigquery/v2/projects/" +
-            project_id + "/jobs"}
+          url: ${"https://bigquery.googleapis.com/bigquery/v2/projects/" + project_id + "/jobs"}
           body: '${job}'
           auth:
             type: OAuth2
@@ -49,9 +44,7 @@ callBQStoredProc:
     - log_job_state:
         call: sys.log
         args:
-          text: >
-            ${"Job " + job_id + " in project " + job_project + " has state : " +
-            job_state}
+          text: ${"Job " + job_id + " in project " + job_project + " has state : " + job_state}
           severity: INFO
     - check_job_state:
         switch:
@@ -75,10 +68,7 @@ callBQStoredProc:
               totalBytesBilled: '${bq_job_get_response.body.statistics.query.totalBytesBilled}'
               totalBytesProcessed: '${bq_job_get_response.body.statistics.query.totalBytesProcessed}'
               totalSlotMs: '${bq_job_get_response.body.statistics.query.totalSlotMs}'
-              jobDetailsUrl: >-
-                ${"https://console.cloud.google.com/bigquery?project=" +
-                project_id + "&j=bq:" + bq_location + ":" + job_id +
-                "&page=queryresults"}
+              jobDetailsUrl: ${"https://console.cloud.google.com/bigquery?project=" + project_id + "&j=bq:" + bq_location + ":" + job_id + "&page=queryresults"}
               numChildJobs: '${bq_job_get_response.body.statistics.numChildJobs}'
     - log_job_completion:
         call: sys.log
