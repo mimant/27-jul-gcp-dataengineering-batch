@@ -56,3 +56,14 @@ resource "google_storage_bucket" "buckets" {
   location = each.value["location"]
   storage_class = each.value["storage_class"]
 }
+
+#create the current project workflows to be deployed
+
+resource "google_workflows_workflow" "workflows_example" {
+  for_each = local.workflows_list
+  name            = basename(each.key)
+  project         = var.project_id
+  description     = each.key
+  # Import main workflow and subworkflow YAML files
+  source_contents = each.value
+}

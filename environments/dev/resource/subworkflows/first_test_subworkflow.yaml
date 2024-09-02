@@ -1,0 +1,105 @@
+callBQStoredProc:
+  params:
+    - stored_proc_name
+    - project_id
+    - poll_wait_time_seconds: 5
+    - bq_location: EU
+  steps:
+    - init:
+        assign:
+          - job:
+              jobReference:
+                location: '${bq_location}'
+              configuration:
+                query:
+                  useLegacySql: false
+                  useQueryCache: false
+                  query: '${"call " + stored_proc_name + "()"}'
+    - log_start:
+        call: sys.log
+        args:
+          text: >
+            ${"Starting execution of bigquery stored procedure \"" +
+            stored_proc_name + "\" using subworkflow executeBQStoredProc in
+            location=" + bq_location}
+          severity: INFO
+    - postCallStoredProc:
+        call: http.post
+        args:
+          url: >-
+            ${"https://bigquery.googleapis.com/bigquery/v2/projects/" +
+            project_id + "/jobs"}
+          body: '${job}'
+          auth:
+            type: OAuth2
+        result: bq_jobs_insert_response
+    - set_job_id:
+        assign:
+          - job_id: '${bq_jobs_insert_response.body.jobReference.jobId}'
+    - bq_job_get:
+        call: bqJobGet
+        args:
+          project_id: '${project_id}'
+          job_id: '${job_id}'
+        result: bq_job_get_response
+    - set_job_vars:
+        assign:
+          - job_state: '${bq_job_get_response.body.status.state}'
+          - job_project: '${bq_job_get_response.body.jobReference.projectId}'
+    - log_job_state:
+        call: sys.log
+        args:
+          text: >
+            ${"Job " + job_id + " in project " + job_project + " has state : " +
+            job_state}
+          severity: INFO
+    - check_job_state:
+        switch:
+          - condition: '${job_state != "DONE"}'
+            steps:
+              - wait_10s:
+                  call: sys.sleep
+                  args:
+                    seconds: '${int(poll_wait_time_seconds)}'
+                  next: bq_job_get
+    - bq_job_get_post_completion:
+        call: bqJobGet
+        args:
+          project_id: '${project_id}'
+          job_id: '${job_id}'
+        result: bq_job_get_response
+    - set_job_completion_vars:
+        assign:
+          - jobCompletionStats:
+              jobId: '${job_id}'
+              totalBytesBilled: '${bq_job_get_response.body.statistics.query.totalBytesBilled}'
+              totalBytesProcessed: '${bq_job_get_response.body.statistics.query.totalBytesProcessed}'
+              totalSlotMs: '${bq_job_get_response.body.statistics.query.totalSlotMs}'
+              jobDetailsUrl: >-
+                ${"https://console.cloud.google.com/bigquery?project=" +
+                project_id + "&j=bq:" + bq_location + ":" + job_id +
+                "&page=queryresults"}
+              numChildJobs: '${bq_job_get_response.body.statistics.numChildJobs}'
+    - log_job_completion:
+        call: sys.log
+        args:
+          text: '${jobCompletionStats}'
+          severity: INFO
+bqJobGet:
+  params:
+    - project_id
+    - job_id
+  steps:
+    - bq_job_get:
+        call: http.request
+        args:
+          url: >-
+            ${"https://bigquery.googleapis.com/bigquery/v2/projects/" +
+            project_id + "/jobs/" + job_id}
+          method: GET
+          auth:
+            type: OAuth2
+        result: bq_job_get_response
+    - returnResult:
+        return: '${bq_job_get_response}'
+
