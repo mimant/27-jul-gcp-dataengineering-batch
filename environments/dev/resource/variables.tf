@@ -14,4 +14,4 @@
 
 
 variable "project_id" {}
-varible "location_id"{}
+variable "location_id"{}
