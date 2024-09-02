@@ -1,7 +1,7 @@
 callBQStoredProc:
   params:
-    - stored_proc_name
-    - project_id
+    - stored_proc_name : "`mimant115-gcp-batch-dv.dataset1.new_proc`"
+    - project_id : "mimant115-gcp-batch-dv"
     - poll_wait_time_seconds: 5
     - bq_location: "${bq_location}"
   steps:
