@@ -3,7 +3,7 @@ callBQStoredProc:
     - stored_proc_name
     - project_id
     - poll_wait_time_seconds: 5
-    - bq_location: "${location_id}"
+    - bq_location: "EU"
   steps:
     - init:
         assign:
