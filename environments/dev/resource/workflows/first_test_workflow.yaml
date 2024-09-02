@@ -7,3 +7,4 @@ main:
         args:
           stored_proc_name: '`"${project_id}".dataset1.new_proc`'
           project_id: "${project_id}"
+
