@@ -3,7 +3,7 @@ callBQStoredProc:
     - stored_proc_name
     - project_id
     - poll_wait_time_seconds: 5
-    - bq_location: "EU"
+    - bq_location: "${bq_location}"
   steps:
     - init:
         assign:
@@ -14,16 +14,16 @@ callBQStoredProc:
                 query:
                   useLegacySql: false
                   useQueryCache: false
-                  query: '${"call " + ${stored_proc_name} + "()"}'
+                  query: '${"call " + stored_proc_name + "()"}'
     - log_start:
         call: sys.log
         args:
-          text: ${"Starting execution of bigquery stored procedure \"" +  ${stored_proc_name} + "\" using subworkflow executeBQStoredProc in location=" + bq_location}
+          text: ${"Starting execution of bigquery stored procedure \"" +  stored_proc_name + "\" using subworkflow executeBQStoredProc in location=" + bq_location}
           severity: INFO
     - postCallStoredProc:
         call: http.post
         args:
-          url: ${"https://bigquery.googleapis.com/bigquery/v2/projects/" + ${project_id} + "/jobs"}
+          url: ${"https://bigquery.googleapis.com/bigquery/v2/projects/" + project_id + "/jobs"}
           body: '${job}'
           auth:
             type: OAuth2
@@ -34,7 +34,7 @@ callBQStoredProc:
     - bq_job_get:
         call: bqJobGet
         args:
-          ${project_id}: '${project_id}'
+          project_id: '${project_id}'
           job_id: '${job_id}'
         result: bq_job_get_response
     - set_job_vars:
@@ -58,7 +58,7 @@ callBQStoredProc:
     - bq_job_get_post_completion:
         call: bqJobGet
         args:
-          ${project_id}: '${project_id}'
+          project_id: '${project_id}'
           job_id: '${job_id}'
         result: bq_job_get_response
     - set_job_completion_vars:
@@ -68,7 +68,7 @@ callBQStoredProc:
               totalBytesBilled: '${bq_job_get_response.body.statistics.query.totalBytesBilled}'
               totalBytesProcessed: '${bq_job_get_response.body.statistics.query.totalBytesProcessed}'
               totalSlotMs: '${bq_job_get_response.body.statistics.query.totalSlotMs}'
-              jobDetailsUrl: ${"https://console.cloud.google.com/bigquery?project=" + ${project_id} + "&j=bq:" + bq_location + ":" + job_id + "&page=queryresults"}
+              jobDetailsUrl: ${"https://console.cloud.google.com/bigquery?project=" + project_id + "&j=bq:" + bq_location + ":" + job_id + "&page=queryresults"}
               numChildJobs: '${bq_job_get_response.body.statistics.numChildJobs}'
     - log_job_completion:
         call: sys.log
@@ -77,7 +77,7 @@ callBQStoredProc:
           severity: INFO
 bqJobGet:
   params:
-    - ${project_id}
+    - project_id
     - job_id
   steps:
     - bq_job_get:
@@ -85,7 +85,7 @@ bqJobGet:
         args:
           url: >-
             ${"https://bigquery.googleapis.com/bigquery/v2/projects/" +
-            ${project_id} + "/jobs/" + job_id}
+            project_id + "/jobs/" + job_id}
           method: GET
           auth:
             type: OAuth2
