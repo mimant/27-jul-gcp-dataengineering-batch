@@ -30,7 +30,7 @@ callBQStoredProc:
         result: bq_jobs_insert_response
     - set_job_id:
         assign:
-          - job_id: '${bq_jobs_insert_response.body.jobReference.jobId}'
+          - job_id: '$${bq_jobs_insert_response.body.jobReference.jobId}'
     - bq_job_get:
         call: bqJobGet
         args:
@@ -39,8 +39,8 @@ callBQStoredProc:
         result: bq_job_get_response
     - set_job_vars:
         assign:
-          - job_state: '${bq_job_get_response.body.status.state}'
-          - job_project: '${bq_job_get_response.body.jobReference.projectId}'
+          - job_state: '$${bq_job_get_response.body.status.state}'
+          - job_project: '$${bq_job_get_response.body.jobReference.projectId}'
     - log_job_state:
         call: sys.log
         args:
@@ -65,15 +65,15 @@ callBQStoredProc:
         assign:
           - jobCompletionStats:
               jobId: '$${job_id}'
-              totalBytesBilled: '${bq_job_get_response.body.statistics.query.totalBytesBilled}'
-              totalBytesProcessed: '${bq_job_get_response.body.statistics.query.totalBytesProcessed}'
-              totalSlotMs: '${bq_job_get_response.body.statistics.query.totalSlotMs}'
-              jobDetailsUrl: ${"https://console.cloud.google.com/bigquery?project=" + project_id + "&j=bq:" + bq_location + ":" + job_id + "&page=queryresults"}
-              numChildJobs: '${bq_job_get_response.body.statistics.numChildJobs}'
+              totalBytesBilled: '$${bq_job_get_response.body.statistics.query.totalBytesBilled}'
+              totalBytesProcessed: '$${bq_job_get_response.body.statistics.query.totalBytesProcessed}'
+              totalSlotMs: '$${bq_job_get_response.body.statistics.query.totalSlotMs}'
+              jobDetailsUrl: $${"https://console.cloud.google.com/bigquery?project=" + project_id + "&j=bq:" + bq_location + ":" + job_id + "&page=queryresults"}
+              numChildJobs: '$${bq_job_get_response.body.statistics.numChildJobs}'
     - log_job_completion:
         call: sys.log
         args:
-          text: '${jobCompletionStats}'
+          text: '$${jobCompletionStats}'
           severity: INFO
 bqJobGet:
   params:
@@ -91,5 +91,5 @@ bqJobGet:
             type: OAuth2
         result: bq_job_get_response
     - returnResult:
-        return: '${bq_job_get_response}'
+        return: '$${bq_job_get_response}'
 
