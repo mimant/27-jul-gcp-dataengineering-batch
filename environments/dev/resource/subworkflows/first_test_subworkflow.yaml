@@ -18,7 +18,7 @@ callBQStoredProc:
     - log_start:
         call: sys.log
         args:
-          text: ${"Starting execution of bigquery stored procedure \"" +  stored_proc_name + "\" using subworkflow executeBQStoredProc in location=" + bq_location}
+          text: $${"Starting execution of bigquery stored procedure \"" +  stored_proc_name + "\" using subworkflow executeBQStoredProc in location=" + bq_location}
           severity: INFO
     - postCallStoredProc:
         call: http.post
