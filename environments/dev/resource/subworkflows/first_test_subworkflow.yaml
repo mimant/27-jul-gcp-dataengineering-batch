@@ -14,7 +14,7 @@ callBQStoredProc:
                 query:
                   useLegacySql: false
                   useQueryCache: false
-                  query: $${"call " + stored_proc_name + "()"}
+                  query: $${"call `" + project_id.stored_proc_name + "`();"}
     - log_start:
         call: sys.log
         args:
