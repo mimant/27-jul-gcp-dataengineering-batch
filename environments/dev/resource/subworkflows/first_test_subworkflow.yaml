@@ -9,7 +9,7 @@ callBQStoredProc:
         assign:
           - job:
               jobReference:
-                location: '${bq_location}'
+                location: $${bq_location}
               configuration:
                 query:
                   useLegacySql: false
