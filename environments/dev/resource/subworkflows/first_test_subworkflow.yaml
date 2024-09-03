@@ -58,7 +58,7 @@ callBQStoredProc:
     - bq_job_get_post_completion:
         call: bqJobGet
         args:
-          project_id: '${project_id}'
+          project_id: '$${project_id}'
           job_id: '$${job_id}'
         result: bq_job_get_response
     - set_job_completion_vars:
