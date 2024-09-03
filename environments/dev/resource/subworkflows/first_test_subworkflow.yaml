@@ -1,7 +1,7 @@
 callBQStoredProc:
   params:
-    - stored_proc_name : "`mimant115-gcp-batch-dv.dataset1.new_proc`"
-    - project_id : "mimant115-gcp-batch-dv"
+    - stored_proc_name 
+    - project_id 
     - poll_wait_time_seconds: 5
     - bq_location: "EU"
   steps:
@@ -24,56 +24,56 @@ callBQStoredProc:
         call: http.post
         args:
           url: $${"https://bigquery.googleapis.com/bigquery/v2/projects/" + project_id + "/jobs"}
-          body: '$${job}'
+          body: $${job}
           auth:
             type: OAuth2
         result: bq_jobs_insert_response
     - set_job_id:
         assign:
-          - job_id: '$${bq_jobs_insert_response.body.jobReference.jobId}'
+          - job_id: $${bq_jobs_insert_response.body.jobReference.jobId}
     - bq_job_get:
         call: bqJobGet
         args:
-          project_id: '$${project_id}'
-          job_id: '$${job_id}'
+          project_id: $${project_id}
+          job_id: $${job_id}
         result: bq_job_get_response
     - set_job_vars:
         assign:
-          - job_state: '$${bq_job_get_response.body.status.state}'
-          - job_project: '$${bq_job_get_response.body.jobReference.projectId}'
+          - job_state: $${bq_job_get_response.body.status.state}
+          - job_project: $${bq_job_get_response.body.jobReference.projectId}
     - log_job_state:
         call: sys.log
         args:
-          text: '$${"Job " + job_id + " in project " + job_project + " has state : " + job_state}'
+          text: $${"Job " + job_id + " in project " + job_project + " has state : " + job_state}
           severity: INFO
     - check_job_state:
         switch:
-          - condition: '$${job_state != "DONE"}'
+          - condition: $${job_state != "DONE"}
             steps:
               - wait_10s:
                   call: sys.sleep
                   args:
-                    seconds: '$${int(poll_wait_time_seconds)}'
+                    seconds: $${int(poll_wait_time_seconds)}
                   next: bq_job_get
     - bq_job_get_post_completion:
         call: bqJobGet
         args:
-          project_id: '$${project_id}'
-          job_id: '$${job_id}'
+          project_id: $${project_id}
+          job_id: $${job_id}
         result: bq_job_get_response
     - set_job_completion_vars:
         assign:
           - jobCompletionStats:
-              jobId: '$${job_id}'
-              totalBytesBilled: '$${bq_job_get_response.body.statistics.query.totalBytesBilled}'
-              totalBytesProcessed: '$${bq_job_get_response.body.statistics.query.totalBytesProcessed}'
-              totalSlotMs: '$${bq_job_get_response.body.statistics.query.totalSlotMs}'
+              jobId: $${job_id}
+              totalBytesBilled: $${bq_job_get_response.body.statistics.query.totalBytesBilled}
+              totalBytesProcessed: $${bq_job_get_response.body.statistics.query.totalBytesProcessed}
+              totalSlotMs: $${bq_job_get_response.body.statistics.query.totalSlotMs}
               jobDetailsUrl: $${"https://console.cloud.google.com/bigquery?project=" + project_id + "&j=bq:" + bq_location + ":" + job_id + "&page=queryresults"}
-              numChildJobs: '$${bq_job_get_response.body.statistics.numChildJobs}'
+              numChildJobs: $${bq_job_get_response.body.statistics.numChildJobs}
     - log_job_completion:
         call: sys.log
         args:
-          text: '$${jobCompletionStats}'
+          text: $${jobCompletionStats}
           severity: INFO
 bqJobGet:
   params:
@@ -91,5 +91,5 @@ bqJobGet:
             type: OAuth2
         result: bq_job_get_response
     - returnResult:
-        return: '$${bq_job_get_response}'
+        return: $${bq_job_get_response}
 
