@@ -23,7 +23,7 @@ callBQStoredProc:
     - postCallStoredProc:
         call: http.post
         args:
-          url: ${"https://bigquery.googleapis.com/bigquery/v2/projects/" + project_id + "/jobs"}
+          url: $${"https://bigquery.googleapis.com/bigquery/v2/projects/" + project_id + "/jobs"}
           body: '${job}'
           auth:
             type: OAuth2
@@ -35,7 +35,7 @@ callBQStoredProc:
         call: bqJobGet
         args:
           project_id: '${project_id}'
-          job_id: '${job_id}'
+          job_id: '$${job_id}'
         result: bq_job_get_response
     - set_job_vars:
         assign:
