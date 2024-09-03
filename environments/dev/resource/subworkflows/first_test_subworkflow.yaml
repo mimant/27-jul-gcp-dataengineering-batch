@@ -44,9 +44,9 @@ callBQStoredProc:
     - log_job_state:
         call: sys.log
         args:
-          text: $${"Job \" + job_id + " in project " + job_project + " has state : " + job_state}
-          severity: INFO
-    - check_job_state:
+          text: $${job_id + " in project " + job_project + " has state : " + job_state} 
+          severity: INFO 
+    - check_job_state: 
         switch:
           - condition: $${job_state != "DONE"}
             steps:
