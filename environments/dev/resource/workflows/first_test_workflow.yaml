@@ -7,4 +7,5 @@ main:
         args:
           stored_proc_name: "dataset1.new_proc"
           project_id: "${project_id}"
+          bq_location: "${bq_location}"
 

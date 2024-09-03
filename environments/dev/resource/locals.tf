@@ -44,8 +44,8 @@ workflows_list = {
   file_stem_path => join(
    "\n",
    concat(
-    [templatefile(file_path, {project_id = var.project_id} )],
-    [for sub_file in local.subworkflows_list: templatefile(sub_file, {project_id = var.project_id, bq_location = "EU"})]
+    [templatefile(file_path, {project_id = var.project_id, bq_location = "EU"} )],
+    [for sub_file in local.subworkflows_list: templatefile(sub_file, {project_id = var.project_id})]
    )
   )
 }
