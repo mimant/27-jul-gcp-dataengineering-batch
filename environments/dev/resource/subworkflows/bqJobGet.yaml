@@ -1,0 +1,18 @@
+bqJobGet:
+  params:
+    - project_id
+    - job_id
+  steps:
+    - bq_job_get:
+        call: http.request
+        args:
+          url: >-
+            $${"https://bigquery.googleapis.com/bigquery/v2/projects/" +
+            project_id + "/jobs/" + job_id}
+          method: GET
+          auth:
+            type: OAuth2
+        result: bq_job_get_response
+    - returnResult:
+        return: $${bq_job_get_response}
+
