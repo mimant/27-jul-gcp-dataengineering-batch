@@ -24,7 +24,7 @@ callBQStoredProc:
         call: http.post
         args:
           url: $${"https://bigquery.googleapis.com/bigquery/v2/projects/" + project_id + "/jobs"}
-          body: '${job}'
+          body: '$${job}'
           auth:
             type: OAuth2
         result: bq_jobs_insert_response
@@ -44,11 +44,11 @@ callBQStoredProc:
     - log_job_state:
         call: sys.log
         args:
-          text: ${"Job " + job_id + " in project " + job_project + " has state : " + job_state}
+          text: $${"Job " + job_id + " in project " + job_project + " has state : " + job_state}
           severity: INFO
     - check_job_state:
         switch:
-          - condition: '${job_state != "DONE"}'
+          - condition: '$${job_state != "DONE"}'
             steps:
               - wait_10s:
                   call: sys.sleep
@@ -59,12 +59,12 @@ callBQStoredProc:
         call: bqJobGet
         args:
           project_id: '${project_id}'
-          job_id: '${job_id}'
+          job_id: '$${job_id}'
         result: bq_job_get_response
     - set_job_completion_vars:
         assign:
           - jobCompletionStats:
-              jobId: '${job_id}'
+              jobId: '$${job_id}'
               totalBytesBilled: '${bq_job_get_response.body.statistics.query.totalBytesBilled}'
               totalBytesProcessed: '${bq_job_get_response.body.statistics.query.totalBytesProcessed}'
               totalSlotMs: '${bq_job_get_response.body.statistics.query.totalSlotMs}'
@@ -84,7 +84,7 @@ bqJobGet:
         call: http.request
         args:
           url: >-
-            ${"https://bigquery.googleapis.com/bigquery/v2/projects/" +
+            $${"https://bigquery.googleapis.com/bigquery/v2/projects/" +
             project_id + "/jobs/" + job_id}
           method: GET
           auth:
