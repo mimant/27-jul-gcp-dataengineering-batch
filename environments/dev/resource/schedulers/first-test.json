@@ -1,7 +1,6 @@
 {
 	
 	"name": "${project_id}-sch-first-test",
-	"project_id": "${project_id}",
 	"schedule": "0 2 * * *",
 	"description": "refersh the table at every 2 am",
 	"time_zone": "Asia/Kolkata",

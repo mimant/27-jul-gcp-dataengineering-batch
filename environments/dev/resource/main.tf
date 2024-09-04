@@ -76,7 +76,7 @@ resource "google_cloud_scheduler_job" "schedulers" {
   for_each = local.schedulers_list
 
   name            = each.value.name
-  project         = try(each.value.project_id, null)
+  project         = var.project_id
   schedule        = try(each.value.schedule, null)
   description     = try(each.value.description, null)
   time_zone       = try(each.value.time_zone, null)
