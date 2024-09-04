@@ -89,7 +89,6 @@ resource "google_cloud_scheduler_job" "schedulers" {
     retry_count    = try(each.value.retry_config.retry_count, null)
     max_retry_duration  = try(each.value.retry_config.max_retry_duration, null)
     min_backoff_duration = try(each.value.retry_config.min_backoff_duration, null)
-    min_backoff_duration = try(each.value.retry_config.min_backoff_duration, null)
     max_backoff_duration = try(each.value.retry_config.max_backoff_duration, null)
     max_doublings = try(each.value.retry_config.max_doublings, null)
 
