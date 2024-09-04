@@ -105,6 +105,7 @@ resource "google_cloud_scheduler_job" "schedulers" {
     headers = try(each.value.http_target.headers, null)
 
       dynamic "oauth_token"{
+       for_each = try(each.value.http_target.oauth_token, null) != null ? [1] : []
        content {
         service_account_email = each.value.http_target.oauth_token.service_account_email
         scope                 = try(each.value.http_target.oauth_token.scope, null)
