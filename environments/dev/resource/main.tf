@@ -75,7 +75,7 @@ resource "google_workflows_workflow" "workflows_example" {
 resource "google_cloud_scheduler_job" "schedulers" {
   for_each = local.schedulers_list
 
-  name            = each.value.name
+  name            = format("%s-%s",var.project_id, each.value.name)
   project         = var.project_id
   schedule        = try(each.value.schedule, null)
   description     = try(each.value.description, null)
