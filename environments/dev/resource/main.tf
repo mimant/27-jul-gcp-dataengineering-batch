@@ -62,7 +62,7 @@ resource "google_storage_bucket" "buckets" {
 
 resource "google_workflows_workflow" "workflows_example" {
   for_each = local.workflows_list
-  name            = format("%s-%s-%s", var.project_id,"wkf",basename(each.key)
+  name            = format("%s-%s-%s", var.project_id,"wkf",basename(each.key))
   project         = var.project_id
   region          = var.region_id
   description     = each.key
