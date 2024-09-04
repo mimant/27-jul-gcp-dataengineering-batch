@@ -52,11 +52,15 @@ workflows_list = {
 
 ##schedulers list to be deployed
 
-schedulers_list = {
-    for file in fileset(path.module, "schedulers/*json") :
-    file => ( jsondecode(file("${path.module}/${file}")))
-  
- }
+schedulers_file_list  = fileset(path.module, "schedulers/*json")
+schedulers_list_raw = {
+  for file_path in local.schedulers_file_list :
+  trimsuffix(file_path, ".json") => "${file_path}"
+}
 
+schedulers_list = {
+  for file_stem_path, file_path in local.schedulers_list_raw:
+    (templatefile(file_path, {project_id = var.project_id, region_id = var.region_id} ))   
+}
 
 }
