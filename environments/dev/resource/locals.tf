@@ -50,5 +50,13 @@ workflows_list = {
   )
 }
 
+##schedulers list to be deployed
+
+scheduler_list = {
+    for file in fileset(path.module, "schedulers/*json") :
+    file => ( jsondecode(file("${path.module}/${file}")))
+  
+ }
+
 
 }
