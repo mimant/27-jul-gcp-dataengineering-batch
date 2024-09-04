@@ -60,7 +60,7 @@ schedulers_list_raw = {
 
 schedulers_list = {
   for file_stem_path, file_path in local.schedulers_list_raw:
-    (templatefile(file_path, {project_id = var.project_id, region_id = var.region_id} ))   
+    file_stem_path => (templatefile(file_path, {project_id = var.project_id, region_id = var.region_id} ))   
 }
 
 }
