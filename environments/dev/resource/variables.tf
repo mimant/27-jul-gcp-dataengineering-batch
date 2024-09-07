@@ -15,3 +15,4 @@
 
 variable "project_id" {}
 variable "region_id" {}
+variable "env" {}

@@ -12,7 +12,7 @@
 		"uri": "https://workflowexecutions.googleapis.com/v1/projects/${project_id}/locations/${region_id}/workflows/${project_id}-wkf-first_test/executions",
 		"body": "{\"argument\":\"{}\"}",
 				"oauth_token":{
-			"service_account_email": "354098197288-compute@developer.gserviceaccount.com",
+			"service_account_email": "${env}-service-account@mimant116-gcp-batch-${env}.iam.gserviceaccount.com",
 			"scope": "https://www.googleapis.com/auth/cloud-platform"
 		}
 	}
