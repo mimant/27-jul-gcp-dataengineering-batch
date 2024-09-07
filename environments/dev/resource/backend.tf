@@ -15,7 +15,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "mimant115-gcp-batch-dv-tfstate"
+    bucket = "mimant116-gcp-batch-dv-tfstate"
     prefix = "env/dev"
   }
 }
