@@ -81,7 +81,7 @@ steps:
   - | 
       if [ $BRANCH_NAME = "develop" ]; then
         cd environments/dev/resource
-        terraform apply --auto-approve
+        terraform apply --auto-approve || exit 1
           echo ""
           echo "*************** TERRAFORM APPLY ******************"
           echo "******* At environment: ${BRANCH_NAME} ********"
@@ -89,7 +89,7 @@ steps:
       fi
       if [ $BRANCH_NAME = "master" ]; then
         cd environments/pd/resource
-        terraform apply --auto-approve
+        terraform apply --auto-approve || exit 1
           echo ""
           echo "*************** TERRAFORM APPLY ******************"
           echo "******* At environment: ${BRANCH_NAME} ********"
