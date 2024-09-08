@@ -1,0 +1,35 @@
+{
+  "name": "function-1",
+  "location": "${region_id}",
+  "description": "a new function",
+  "build_config": {
+    "runtime": "python3.10",
+    "entry_point": "hello_gcs",
+    "environment_variables" : {
+        "project_id" : "mimant116-gcp-batch-dv"
+    },
+    "source": {
+      "storage_source": {
+        "bucket": "gs://mimant116-gcp-batch-dv-cloud-functions",
+        "object": "function-1.zip"
+      }
+    }
+  },
+
+    "service_config" : {
+    "min_instance_count" : 1,
+    "available_memory" : "256M",
+    "timeout_seconds" : 60,
+    "service_account_email" : "dv-service-account@mimant116-gcp-batch-dv.iam.gserviceaccount.com"
+  },
+
+    "event_trigger" :  {
+    "trigger_region" : "europe-west1",
+    "event_type": "google.cloud.storage.object.v1.finalized",
+    "service_account_email" : "dv-service-account@mimant116-gcp-batch-dv.iam.gserviceaccount.com",
+    "event_filters": {
+      "attribute": "bucket",
+      "value" : "gs://mimant116-gcp-batch-dv-bucket1"
+    }
+  }
+}

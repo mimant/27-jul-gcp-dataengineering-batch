@@ -50,17 +50,31 @@ workflows_list = {
   )
 }
 
-##schedulers list to be deployed
+ ##schedulers list to be deployed
 
-schedulers_file_list  = fileset(path.module, "schedulers/*json")
-schedulers_list_raw = {
+ schedulers_file_list  = fileset(path.module, "schedulers/*json")
+ schedulers_list_raw = {
   for file_path in local.schedulers_file_list :
   trimsuffix(file_path, ".json") => "${file_path}"
-}
+ }
 
-schedulers_list = {
+ schedulers_list = {
   for file_stem_path, file_path in local.schedulers_list_raw:
     file_stem_path => jsondecode(templatefile(file_path, {project_id = var.project_id, region_id = var.region_id, env = var.env} ))
-}
+ }
+
+ ##cloudfunction deployment
+
+ cloudfunctions_file_list  = fileset(path.module, "cloudfunctions/*json")
+ cloudfunctions_list_raw = {
+  for file_path in local.cloudfunctions_file_list :
+  trimsuffix(file_path, ".json") => "${file_path}"
+ }
+
+ cloudfunctions_list = {
+  for file_stem_path, file_path in local.cloudfunctions_list_raw:
+    file_stem_path => jsondecode(templatefile(file_path, {region_id = var.region_id} ))
+ }
+
 
 }

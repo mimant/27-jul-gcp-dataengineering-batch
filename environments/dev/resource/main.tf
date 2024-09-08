@@ -110,11 +110,94 @@ resource "google_cloud_scheduler_job" "schedulers" {
         service_account_email = each.value.http_target.oauth_token.service_account_email
         scope                 = try(each.value.http_target.oauth_token.scope, null)
 
+         }
+        }
        }
-
+      }
      }
 
-   }
- }
+## Create the cloud run functions
 
-}
+resource "google_cloudfunctions2_function" "cloudfunctions" {
+  for_each = local.cloudfunctions_list
+   name            = each.value.name
+   location        = each.value.location
+   description     = try(each.value.description, null)
+
+   dynamic "build_config" {
+    for_each = try(each.value.build_config, null) != null ? [1] : []
+
+    content {
+     runtime  = try(each.value.build_config.runtime, null)
+     entry_point   = try(each.value.build_config.entry_point , null)
+
+       dynamic "environment_variables"{
+        for_each = try(each.value.build_config.environment_variables, null) != null ? [1] : []
+         content {
+           project_id = each.value.build_config.environment_variables.project_id
+         }
+        }
+
+   dynamic "source"{
+     for_each = try(each.value.source, null) != null ? [1] : []
+
+    content{
+     dynamic "storage_source"{
+     for_each = try(each.value.source.storage_source, null) != null ? [1] : []
+
+      content{
+       bucket = each.value.source.storage_source.bucket
+       object = each.value.source.storage_source.object
+             }
+            }
+           }
+          }
+         }
+        }
+
+    dynamic "http_target" {
+     for_each = try(each.value.http_target, null) != null ? [1] : []
+     content {
+      uri = each.value.http_target.uri
+      http_method = try(each.value.http_target.http_method, null)
+      body = try(base64encode(try(each.value.http_target.body,null)), null)
+      headers = try(each.value.http_target.headers, null)
+
+       dynamic "oauth_token"{
+        for_each = try(each.value.http_target.oauth_token, null) != null ? [1] : []
+        content {
+         service_account_email = each.value.http_target.oauth_token.service_account_email
+         scope                 = try(each.value.http_target.oauth_token.scope, null)
+
+          }
+         }
+        }
+       }
+
+     dynamic "service_config" {
+      for_each = try(each.value.service_config, null) != null ? [1] : []
+      content {
+        min_instance_count = try(each.value.service_config.min_instance_count, null)
+        available_memory = try(each.value.service_config.available_memory, null)
+        timeout_seconds = try(each.value.service_config.timeout_seconds, null)
+        service_account_email = try(each.value.service_config.service_account_email, null)
+       }
+     }
+
+     dynamic "event_trigger" {
+      for_each = try(each.value.event_trigger, null) != null ? [1] : []
+      content {
+       trigger_region = try(each.value.event_trigger.trigger_region, null)
+       event_type = try(each.value.event_trigger.event_type, null)
+       service_account_email = try(each.value.event_trigger.service_account_email, null)
+
+       dynamic "event_filters"  {
+        for_each = try(each.value.event_trigger.event_filters, null) != null ? [1] : []
+        content{
+          attribute =  try(each.value.event_trigger.event_filters.attribute, null)
+          value  =  try(each.value.event_trigger.event_filters.value, null)
+        }
+       }
+      }
+     }
+    }
