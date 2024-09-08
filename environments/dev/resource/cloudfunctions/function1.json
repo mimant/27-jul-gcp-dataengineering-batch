@@ -17,7 +17,7 @@
     "service_config" : {
     "min_instance_count" : 1,
     "available_memory" : "256M",
-    "timeout_seconds" : 60,
+    "timeout_seconds" : 120,
     "service_account_email" : "dv-service-account@mimant116-gcp-batch-dv.iam.gserviceaccount.com",
     "environment_variables": {
       "project_id" : "${project_id}"
