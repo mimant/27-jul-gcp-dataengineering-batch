@@ -138,16 +138,16 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
          }
         }
 
-   dynamic "source" {
-     for_each = try(each.value.source, null) != null ? [1] : []
+       dynamic "source" {
+        for_each = try(each.value.build_config.source, null) != null ? [1] : []
 
-    content{
-     dynamic "storage_source" {
-     for_each = try(each.value.source.storage_source, null) != null ? [1] : []
+        content{
+          dynamic "storage_source" {
+          for_each = try(each.value.build_config.source.storage_source, null) != null ? [1] : []
 
-      content{
-       bucket = each.value.source.storage_source.bucket
-       object = each.value.source.storage_source.object
+        content{
+           bucket = each.value.build_config.source.storage_source.bucket
+           object = each.value.build_config.source.storage_source.object
              }
             }
            }
