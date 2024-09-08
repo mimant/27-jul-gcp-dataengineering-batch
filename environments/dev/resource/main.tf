@@ -158,6 +158,7 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
 		dynamic "secret_environment_variables"{
 		 for_each = try(each.value.service_config.secret_environment_variables, null) != null ? [1] : []
 		 content{
+		  key = try(each.value.service_config.secret_environment_variables.key, null)
 		  project_id = try(each.value.service_config.secret_environment_variables.project_id, null)
 		  version    = try(each.value.service_config.secret_environment_variables.version, null)
 		  }
