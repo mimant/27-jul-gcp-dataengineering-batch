@@ -6,11 +6,11 @@
     "runtime": "python3.10",
     "entry_point": "hello_gcs",
     "environment_variables" : {
-        "project_id" : "mimant116-gcp-batch-dv"
+        "project_id" : "${project_id}"
     },
     "source": {
       "storage_source": {
-        "bucket": "gs://mimant116-gcp-batch-dv-cloud-functions",
+        "bucket": "gs://${project_id}-cloud-functions",
         "object": "function-1.zip"
       }
     }
@@ -24,12 +24,12 @@
   },
 
     "event_trigger" :  {
-    "trigger_region" : "europe-west1",
+    "trigger_region" : "${region_id}",
     "event_type": "google.cloud.storage.object.v1.finalized",
     "service_account_email" : "dv-service-account@mimant116-gcp-batch-dv.iam.gserviceaccount.com",
     "event_filters": {
       "attribute": "bucket",
-      "value" : "gs://mimant116-gcp-batch-dv-bucket1"
+      "value" : "gs://${project_id}-bucket1"
     }
   }
 }

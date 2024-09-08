@@ -73,7 +73,7 @@ workflows_list = {
 
  cloudfunctions_list = {
   for file_stem_path, file_path in local.cloudfunctions_list_raw:
-    file_stem_path => jsondecode(templatefile(file_path, {region_id = var.region_id} ))
+    file_stem_path => jsondecode(templatefile(file_path, {project_id = var.project_id, region_id = var.region_id} ))
  }
 
 

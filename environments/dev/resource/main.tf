@@ -131,18 +131,18 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
      runtime  = try(each.value.build_config.runtime, null)
      entry_point   = try(each.value.build_config.entry_point , null)
 
-       dynamic "environment_variables"{
+       dynamic "environment_variables" {
         for_each = try(each.value.build_config.environment_variables, null) != null ? [1] : []
          content {
-           project_id = each.value.build_config.environment_variables.project_id
+           project_id = try(each.value.build_config.environment_variables.project_id , null)
          }
         }
 
-   dynamic "source"{
+   dynamic "source" {
      for_each = try(each.value.source, null) != null ? [1] : []
 
     content{
-     dynamic "storage_source"{
+     dynamic "storage_source" {
      for_each = try(each.value.source.storage_source, null) != null ? [1] : []
 
       content{
