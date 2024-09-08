@@ -5,9 +5,7 @@
   "build_config": {
     "runtime": "python3.10",
     "entry_point": "hello_gcs",
-    "environment_variables" : {
-        "project_id" : "${project_id}"
-    },
+
     "source": {
       "storage_source": {
         "bucket": "gs://${project_id}-cloud-functions",
@@ -20,7 +18,10 @@
     "min_instance_count" : 1,
     "available_memory" : "256M",
     "timeout_seconds" : 60,
-    "service_account_email" : "dv-service-account@mimant116-gcp-batch-dv.iam.gserviceaccount.com"
+    "service_account_email" : "dv-service-account@mimant116-gcp-batch-dv.iam.gserviceaccount.com",
+    "secret_environment_variables": {
+      "project_id" : "${project_id}",
+    }
   },
 
     "event_trigger" :  {

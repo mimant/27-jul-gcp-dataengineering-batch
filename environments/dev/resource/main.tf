@@ -131,13 +131,6 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
      runtime  = try(each.value.build_config.runtime, null)
      entry_point   = try(each.value.build_config.entry_point , null)
 
-       dynamic "environment_variables" {
-        for_each = try(each.value.build_config.environment_variables, null) != null ? [1] : []
-         content {
-           project_id = try(each.value.build_config.environment_variables.project_id , null)
-         }
-        }
-
        dynamic "source" {
         for_each = try(each.value.build_config.source, null) != null ? [1] : []
 
@@ -162,6 +155,12 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
         available_memory = try(each.value.service_config.available_memory, null)
         timeout_seconds = try(each.value.service_config.timeout_seconds, null)
         service_account_email = try(each.value.service_config.service_account_email, null)
+		dynamic "secret_environment_variables"{
+		 for_each = try(each.value.service_config.secret_environment_variables, null) != null ? [1] : []
+		 content{
+		  project_id = try(each.value.service_config.secret_environment_variables.project_id, null)
+		  }
+		 }
        }
      }
 
