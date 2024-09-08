@@ -30,7 +30,7 @@
     "service_account_email" : "dv-service-account@mimant116-gcp-batch-dv.iam.gserviceaccount.com",
     "event_filters": {
       "attribute": "bucket",
-      "value" : "${project_id}-bucket1"
+      "value" : "${project_id}-bucket2"
     }
   }
 }
