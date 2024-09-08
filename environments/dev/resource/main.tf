@@ -155,25 +155,6 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
          }
         }
 
-    dynamic "http_target" {
-     for_each = try(each.value.http_target, null) != null ? [1] : []
-     content {
-      uri = each.value.http_target.uri
-      http_method = try(each.value.http_target.http_method, null)
-      body = try(base64encode(try(each.value.http_target.body,null)), null)
-      headers = try(each.value.http_target.headers, null)
-
-       dynamic "oauth_token"{
-        for_each = try(each.value.http_target.oauth_token, null) != null ? [1] : []
-        content {
-         service_account_email = each.value.http_target.oauth_token.service_account_email
-         scope                 = try(each.value.http_target.oauth_token.scope, null)
-
-          }
-         }
-        }
-       }
-
      dynamic "service_config" {
       for_each = try(each.value.service_config, null) != null ? [1] : []
       content {
