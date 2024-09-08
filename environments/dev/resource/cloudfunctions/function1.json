@@ -19,10 +19,8 @@
     "available_memory" : "256M",
     "timeout_seconds" : 60,
     "service_account_email" : "dv-service-account@mimant116-gcp-batch-dv.iam.gserviceaccount.com",
-    "secret_environment_variables": {
-      "key"        : "TEST",
-      "project_id" : "${project_id}",
-      "version" : "latest"
+    "environment_variables": {
+      "project_id" : "${project_id}"
     }
   },
 
