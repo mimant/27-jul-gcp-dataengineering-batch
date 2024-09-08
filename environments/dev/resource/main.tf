@@ -155,10 +155,7 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
         available_memory = try(each.value.service_config.available_memory, null)
         timeout_seconds = try(each.value.service_config.timeout_seconds, null)
         service_account_email = try(each.value.service_config.service_account_email, null)
-		for_each = try(each.value.service_config.environment_variables, null) != null ? [1] : []
-		 content{
-		  project_id = try(each.value.service_config.environment_variables.project_id, null)
-		  }
+		environment_variables = try(each.value.service_config.environment_variables, null)
 		 }
        }
 
