@@ -3,7 +3,7 @@
   "location": "${region_id}",
   "description": "a new function",
   "build_config": {
-    "runtime": "python3.10",
+    "runtime": "python310",
     "entry_point": "hello_gcs",
 
     "source": {
