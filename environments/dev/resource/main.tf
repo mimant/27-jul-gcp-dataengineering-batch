@@ -193,3 +193,17 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
 
    depends_on = [ google_bigquery_table.tables ]
  }
+
+
+## Create the stored procedure
+
+ resource "google_bigquery_table" "sprocs" {
+  for_each = local.sprocs_list
+  project    = var.project_id
+  dataset_id = each.value.dataset_id
+  routine_id = each.value.routine_id
+  description = each.value.description
+  routine_type = "PROCEDURE"
+  language = "SQL"
+  definition_body = each.value.definition_body
+ }

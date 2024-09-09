@@ -89,4 +89,17 @@ workflows_list = {
     file_stem_path => jsondecode(templatefile(file_path, {project_id = var.project_id} ))
  }
 
+  ##bigquery sproc stored procedure deployment
+
+ sprocs_file_list  = fileset(path.module, "sql_scripts/*yaml")
+ sprocs_list_raw = {
+  for file_path in local.sprocs_file_list :
+  trimsuffix(file_path, ".json") => "${file_path}"
+ }
+
+ sprocs_list = {
+  for file_stem_path, file_path in local.sprocs_list_raw:
+    file_stem_path => yamldecode(templatefile(file_path, {project_id = var.project_id} ))
+ }
+
 }
