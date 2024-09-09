@@ -1,7 +1,7 @@
-dataset_id : "dataset1"
-routine_id : "sproc1"
+dataset_id : dataset1
+routine_id : sproc1
 description : |-
-  "This is the first procedure to be deployed"
+  This is the first procedure to be deployed
 definition_body : |-
   BEGIN
    select * from ${project_id}.dataset1.table1;

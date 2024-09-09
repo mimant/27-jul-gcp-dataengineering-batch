@@ -197,7 +197,7 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
 
 ## Create the stored procedure
 
- resource "google_bigquery_table" "sprocs" {
+ resource "google_bigquery_routine" "sprocs" {
   for_each = local.sprocs_list
   project    = var.project_id
   dataset_id = each.value.dataset_id
