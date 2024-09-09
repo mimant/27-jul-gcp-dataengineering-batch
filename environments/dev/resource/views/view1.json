@@ -1,0 +1,7 @@
+{
+
+  "dataset_id" : "dataset1",
+  "view_id" : "view1",
+  "description" : "View1",
+  "query" : "select * from ${project_id}.dataset1.table1"
+}

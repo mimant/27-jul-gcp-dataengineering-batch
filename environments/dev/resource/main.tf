@@ -176,3 +176,20 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
       }
      }
     }
+
+## Create the views depending on tables
+
+ resource "google_bigquery_table" "views" {
+  for_each = local.views_list
+  project    = var.project_id
+  dataset_id = each.value.dataset_id
+  table_id   = each.value.view_id
+  deletion_protection = false
+
+    view {
+    query          = each.value.query
+    use_legacy_sql = false
+    }
+
+   depends_on = [ google_bigquery_table.tables ]
+ }
