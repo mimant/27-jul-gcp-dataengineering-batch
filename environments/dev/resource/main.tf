@@ -202,6 +202,8 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
   project    = var.project_id
   dataset_id = each.value.dataset_id
   routine_id = each.value.routine_id
+  routine_type = "PROCEDURE"
+  language = "SQL"
   description = each.value.description
   definition_body = each.value.definition_body
  }
