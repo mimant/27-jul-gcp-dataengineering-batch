@@ -94,7 +94,7 @@ workflows_list = {
  sprocs_file_list  = fileset(path.module, "sql_scripts/*yaml")
  sprocs_list_raw = {
   for file_path in local.sprocs_file_list :
-  trimsuffix(file_path, ".json") => "${file_path}"
+  trimsuffix(file_path, ".yaml") => "${file_path}"
  }
 
  sprocs_list = {
