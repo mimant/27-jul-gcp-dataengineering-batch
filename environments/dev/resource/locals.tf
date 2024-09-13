@@ -102,4 +102,18 @@ workflows_list = {
     file_stem_path => yamldecode(templatefile(file_path, {project_id = var.project_id} ))
  }
 
+##bigquery materialized views deployment
+
+ mat_views_file_list  = fileset(path.module, "mat_views/*json")
+ mat_views_list_raw = {
+  for file_path in local.mat_views_file_list :
+  trimsuffix(file_path, ".json") => "${file_path}"
+ }
+
+ mat_views_list = {
+  for file_stem_path, file_path in local.mat_views_list_raw:
+    file_stem_path => jsondecode(templatefile(file_path, {project_id = var.project_id} ))
+ }
+
 }
+

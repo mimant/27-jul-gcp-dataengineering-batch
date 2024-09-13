@@ -207,3 +207,17 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
   description = each.value.description
   definition_body = each.value.definition_body
  }
+
+
+ ## Create the materialized views depending on tables
+
+ resource "google_bigquery_table" "mat_views" {
+  for_each = local.mat_views_list
+  project    = var.project_id
+  dataset_id = each.value.dataset_id
+  table_id   = each.value.view_id
+  deletion_protection = false
+  materialized_view = each.value.materialized_view
+
+   depends_on = [ google_bigquery_table.tables ]
+ }

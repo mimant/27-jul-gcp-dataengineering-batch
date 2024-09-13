@@ -1,0 +1,13 @@
+{
+  "dataset_id" : "${dataset_id}",
+  "table_id" : "mat_view_1",
+  "deletion_protection" : false,
+
+  "materialized_view" : {
+    "query" : "select * from ${project_id}.${dataset_id}.table1",
+    "enable_refresh" : true,
+    "refresh_interval_ms" : 1800000,
+    "allow_non_incremental_definition" : false
+  }
+
+}
