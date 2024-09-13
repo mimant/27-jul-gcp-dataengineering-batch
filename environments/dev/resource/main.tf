@@ -215,7 +215,7 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
   for_each = local.mat_views_list
   project    = var.project_id
   dataset_id = each.value.dataset_id
-  table_id   = each.value.view_id
+  table_id   = each.value.table_id
   deletion_protection = false
 
    dynamic "materialized_view" {
