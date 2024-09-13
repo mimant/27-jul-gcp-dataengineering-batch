@@ -1,5 +1,5 @@
 {
-  "dataset_id" : "${dataset_id}",
+  "dataset_id" : "dataset1",
   "table_id" : "mat_view_1",
   "deletion_protection" : false,
 
