@@ -217,7 +217,15 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
   dataset_id = each.value.dataset_id
   table_id   = each.value.view_id
   deletion_protection = false
-  materialized_view = each.value.materialized_view
 
+   dynamic "materialized_view" {
+      for_each = try(each.value.materialized_view, null) != null ? [1] : []
+      content {
+       query = try(each.value.materialized_view.query, null)
+       enable_refresh = try(each.value.materialized_view.enable_refresh, null)
+       refresh_interval_ms = try(each.value.materialized_view.refresh_interval_ms, null)
+       allow_non_incremental_definition = try(each.value.materialized_view.allow_non_incremental_definition, null)
+       }
+     }
    depends_on = [ google_bigquery_table.tables ]
  }
