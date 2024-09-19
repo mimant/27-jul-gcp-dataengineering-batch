@@ -230,10 +230,20 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
    depends_on = [ google_bigquery_table.tables ]
  }
 
-  ## Create the materialized views depending on tables
+## Create pubsub topics
 
  resource "google_pubsub_topic" "pubsub_topics" {
   for_each = local.pubsub_topics_list
   project  = var.project_id
   name     = each.value.name
-}
+ }
+
+## Create pubsub subscriptions for topics
+
+ resource "google_pubsub_topic" "pubsub_subs" {
+  for_each = local.pubsub_subs_list
+  project  = var.project_id
+  name     = each.value.name
+  topic    = each.value.topic
+  ack_deadline_seconds = each.value.ack_deadline_seconds
+ }
