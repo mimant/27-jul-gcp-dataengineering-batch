@@ -247,3 +247,22 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
   topic    = each.value.topic
   ack_deadline_seconds = each.value.ack_deadline_seconds
  }
+
+## Create composer airflow state machine
+
+ resource "google_composer_environment" "composer_airflow" {
+  for_each = local.composer_list
+  project  = var.project_id
+  region   = var.region_id
+
+  dynamic "config" {
+   for_each = try(each.value.config, null) != null ? [1] : []
+     content {
+      dynamic "software_config"
+       for_each = try(each.value.config.software_config, null) != null ? [1] : []
+        content {
+         image_version = try(each.value.config.software_config.image_version, null)
+       }
+     }
+   }
+ }

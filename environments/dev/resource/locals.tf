@@ -128,7 +128,7 @@ workflows_list = {
     file_stem_path => jsondecode(templatefile(file_path, {project_id = var.project_id} ))
  }
 
- ##pubsub subscription deployment
+##pubsub subscription deployment
 
  pubsub_subs_file_list  = fileset(path.module, "pubsub_subs/*json")
  pubsub_subs_list_raw = {
@@ -139,6 +139,19 @@ workflows_list = {
  pubsub_subs_list = {
   for file_stem_path, file_path in local.pubsub_subs_list_raw:
     file_stem_path => jsondecode(templatefile(file_path, {project_id = var.project_id} ))
+ }
+
+##composer airflow environments creation
+
+ composer_file_list  = fileset(path.module, "composer_airflow/*json")
+ composer_list_raw = {
+  for file_path in local.composer_file_list :
+  trimsuffix(file_path, ".json") => "${file_path}"
+ }
+
+ composer_list = {
+  for file_stem_path, file_path in local.composer_list_raw:
+    file_stem_path => jsondecode(templatefile(file_path, {project_id = var.project_id, region_id = var.region_id} ))
  }
 
 }
