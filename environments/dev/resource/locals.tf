@@ -115,5 +115,18 @@ workflows_list = {
     file_stem_path => jsondecode(templatefile(file_path, {project_id = var.project_id} ))
  }
 
+ ##pubsub topic deployment
+
+ pubsub_topics_file_list  = fileset(path.module, "pubsub_topics/*json")
+ pubsub_topics_list_raw = {
+  for file_path in local.pubsub_topics_file_list :
+  trimsuffix(file_path, ".json") => "${file_path}"
+ }
+
+ pubsub_topics_list = {
+  for file_stem_path, file_path in local.pubsub_topics_list_raw:
+    file_stem_path => jsondecode(templatefile(file_path, {project_id = var.project_id} ))
+ }
+
 }
 

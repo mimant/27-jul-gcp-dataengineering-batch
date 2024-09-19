@@ -1,0 +1,5 @@
+{
+  "name" : "${project_id}_topic_1",
+  "message_retention_duration" : "86600s"
+
+}
