@@ -1,5 +1,5 @@
 {
-  "name"  : "{project_id}_topic_1_subs",
-  "topic" : "{project_id}_topic_1",
+  "name"  : "${project_id}_topic_1_subs",
+  "topic" : "${project_id}_topic_1",
   "ack_deadline_seconds" : 20
 }
