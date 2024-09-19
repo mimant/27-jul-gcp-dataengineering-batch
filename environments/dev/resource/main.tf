@@ -240,7 +240,7 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
 
 ## Create pubsub subscriptions for topics
 
- resource "google_pubsub_topic" "pubsub_subs" {
+ resource "google_pubsub_subscription" "pubsub_subs" {
   for_each = local.pubsub_subs_list
   project  = var.project_id
   name     = each.value.name
