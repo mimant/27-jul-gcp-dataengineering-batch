@@ -1,5 +1,5 @@
 {
-  "name" : "${project_id}_airflow_1",
+  "name" : "${project_id}-airflow-1",
   "region" : "${region_id}",
   "config" : {
     "software_config" : {
