@@ -2,7 +2,7 @@
   "name" : "${project_id}_airflow_1",
   "region" : "${region_id}",
   "config" : {
-    "software_config": {
+    "software_config" : {
       "image_version" : "composer-2-airflow-2"
     }
   }

@@ -258,11 +258,12 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
   dynamic "config" {
    for_each = try(each.value.config, null) != null ? [1] : []
      content {
-      dynamic "software_config"
+      dynamic "software_config" {
        for_each = try(each.value.config.software_config, null) != null ? [1] : []
         content {
          image_version = try(each.value.config.software_config.image_version, null)
+             }
+           }
+         }
        }
      }
-   }
- }
