@@ -252,6 +252,7 @@ resource "google_cloudfunctions2_function" "cloudfunctions" {
 
  resource "google_composer_environment" "composer_airflow" {
   for_each = local.composer_list
+  name     = each.value.name
   project  = var.project_id
   region   = var.region_id
 
